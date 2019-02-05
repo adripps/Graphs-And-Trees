@@ -1,0 +1,198 @@
+Exercises:
+1. A binary tree is a data structure that is unique in that each node may point to a right or left child
+2. Heuristic is an algorithm that uses a guess to solve a complex problem.
+3. Programming a computer to play chess would involve some heuristics. There are an infinite amount of possible moves from each player throughout the game and finding the optimal move would be impossible.  
+4. A depth-first search will search through each node until it hits a leaf before backtracking while a breadth-first search explores all of the neighbor nodes before moving to the next level of neighbors.
+5. An undirected, a-cyclic, unweighted graph would have data flowing in both directions between the nodes, not have any nodes loop back to a parent node, and not account for the cost of travel between nodes.
+6. An undirected, a-cyclic, weighted graph.
+Programming Questions:
+1.
+function Node(value){
+  this.value = value;
+  this.left = null;
+  this.right = null;
+}
+  
+function BinarySearchTree(){
+  this.root = null;
+}
+              
+BinarySearchTree.prototype.push = function(value){
+   var root = this.root;
+
+   if(!root){
+      this.root = new Node(value);
+      return;
+   }
+
+   var currentNode = root;
+   var newNode = new Node(value); 
+
+   while(currentNode){
+      if(value < currentNode.value){
+          if(!currentNode.left){
+             currentNode.left = newNode;
+             return;
+          }
+          else{
+             currentNode = currentNode.left;
+        }
+     }
+     else{
+         if(!currentNode.right){
+            currentNode.right = newNode;
+            return;
+         }
+         else{
+            currentNode = currentNode.right;
+         }
+     }
+  }
+}
+
+function valueExists(root, value){
+    if (root == null){
+      return false;
+    }
+    if (root.value == value){
+      return true;
+    } 
+    if (root.value > value){
+      return valueExists(root.left, value);
+    }
+    if (root.value < value) {
+      return valueExists(root.right, value);
+    }
+}
+
+var tree = new BinarySearchTree();
+tree.push(8);
+tree.push(3);
+tree.push(1);
+tree.push(6);
+tree.push(4);
+tree.push(7);
+tree.push(10);
+tree.push(14);
+tree.push(13);
+
+console.log("Value of 10 Exists: " + valueExists(tree.root, 10));
+console.log("Value of 23 Exists: " + valueExists(tree.root, 23));
+
+2.
+function Node(value){
+  this.value = value;
+  this.left = null;
+  this.right = null;
+}
+  
+function BinarySearchTree(){
+  this.root = null;
+}
+              
+BinarySearchTree.prototype.push = function(value){
+   var root = this.root;
+
+   if(!root){
+      this.root = new Node(value);
+      return;
+   }
+
+   var currentNode = root;
+   var newNode = new Node(value); 
+
+   while(currentNode){
+      if(value < currentNode.value){
+          if(!currentNode.left){
+             currentNode.left = newNode;
+             return;
+          }
+          else{
+             currentNode = currentNode.left;
+        }
+     }
+     else{
+         if(!currentNode.right){
+            currentNode.right = newNode;
+            return;
+         }
+         else{
+            currentNode = currentNode.right;
+         }
+     }
+  }
+}
+
+function valueExists(root, value){
+    if (root == null){
+      return false;
+    }
+    if (root.value == value){
+      return true;
+    } 
+    if (root.value > value){
+      return valueExists(root.left, value);
+    }
+    if (root.value < value) {
+      return valueExists(root.right, value);
+    }
+}
+
+function distance(root, value){
+  var distance = 0;
+  while (root){
+    if (value == root.value){
+      return distance;
+    }
+    if (value < root.value){
+      root = root.left;
+    }
+    else {
+      root = root.right;
+    }
+    distance++;
+  }
+  return distance;
+}
+
+function findLowestCommonAncestor(root, n1, n2){
+  if (root == null){
+    return;
+  }
+  if (n1 == root.value || n2 == root.value){
+    return root;
+  }
+  if (root.left != null && root.right != null){
+    return root;
+  }
+  if (root.left == null){
+    return root.right;
+  }
+  else {
+    return root.left;
+  }
+}
+
+function distanceBetweenNodes(root, n1, n2){
+  var lowestCommonAncestor = findLowestCommonAncestor(root, n1, n2);
+  var totalDistance = (distance(lowestCommonAncestor, n1) + distance(lowestCommonAncestor, n2)) - 
+                      (2 * distance(root, lowestCommonAncestor.value));
+  return totalDistance;
+}
+
+
+
+var tree = new BinarySearchTree();
+tree.push(8);
+tree.push(3);
+tree.push(1);
+tree.push(6);
+tree.push(4);
+tree.push(7);
+tree.push(10);
+tree.push(14);
+tree.push(13);
+
+console.log("Distance between nodes 4 and 10: " + distanceBetweenNodes(tree.root, 4, 10));
+console.log("Distance between nodes 8 and 10: " + distanceBetweenNodes(tree.root, 8, 10));
+console.log("Distance between nodes 1 and 14: " + distanceBetweenNodes(tree.root, 1, 14));
